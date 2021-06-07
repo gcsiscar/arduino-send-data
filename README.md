@@ -25,6 +25,8 @@ Clone the repo
 ```
 git clone https://github.com/gcsiscar/arduino-send-data.git
 
+```
+
 Change to the `arduino-data` folder and install development and production dependencies.
 
 ```
@@ -35,12 +37,9 @@ npm install
 ```
 
 Start the program
+
 ```
 
 npm start
-
-```
-
-
 
 ```
