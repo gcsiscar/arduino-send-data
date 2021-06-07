@@ -6,6 +6,7 @@ const readline = require("readline");
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
+  prompt: "Arduino> ",
 });
 
 let data = {
@@ -16,19 +17,42 @@ let data = {
 
 console.log("\x1b[35m%s\x1b[0m", "The CLI is running");
 
-const chat = () => {
-  rl.question("Command: ", (message) => {
-    if (message === "send") {
+rl.prompt();
+
+rl.on("line", (line) => {
+  switch (line.trim()) {
+    case "help":
+      console.log("send - to send data");
+      console.log("set - to set data");
+      console.log("help - to see this prompt");
+      break;
+    case "send":
       socket.emit("arduino-data", data);
-    }
+      console.log("sent:", data);
+      break;
+    case "set":
+      rl.question("weight: ", (weight) => {
+        data["weight"] = parseInt(weight);
+        rl.question("distance: ", (distance) => {
+          data["distance"] = parseInt(distance);
+          rl.question("status: ", (status) => {
+            data["status"] = status;
+            console.log("set:", data);
+            rl.prompt();
+          });
+        });
+      });
 
-    if (message === "exit") {
+      break;
+    case "exit":
       rl.close();
-      return;
-    }
-
-    chat();
-  });
-};
-
-chat();
+      break;
+    default:
+      console.log(`Say what? I might have heard '${line.trim()}'`);
+      break;
+  }
+  rl.prompt();
+}).on("close", () => {
+  console.log("Have a great day!");
+  process.exit(0);
+});
