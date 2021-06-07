@@ -14,19 +14,10 @@ let data = {
   status: "",
 };
 
+console.log("\x1b[35m%s\x1b[0m", "The CLI is running");
+
 const chat = () => {
   rl.question("Command: ", (message) => {
-    if (message === "set") {
-      rl.question("Weight:", (weight) => (data["weight"] = parseInt(weight)));
-      rl.pause();
-      rl.question(
-        "Distance:",
-        (distance) => (data["distance"] = parseInt(distance))
-      );
-      rl.pause();
-      rl.question("Status:", (status) => (data["status"] = status));
-      rl.pause();
-    }
     if (message === "send") {
       socket.emit("arduino-data", data);
     }
