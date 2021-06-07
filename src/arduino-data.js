@@ -8,17 +8,30 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
+let data = {
+  weight: 0,
+  distance: 0,
+  status: "",
+};
+
 const chat = () => {
   rl.question("Command: ", (message) => {
+    if (message === "set") {
+      rl.question("Weight:", (weight) => (data["weight"] = parseInt(weight)));
+      rl.pause();
+      rl.question(
+        "Distance:",
+        (distance) => (data["distance"] = parseInt(distance))
+      );
+      rl.pause();
+      rl.question("Status:", (status) => (data["status"] = status));
+      rl.pause();
+    }
     if (message === "send") {
-      socket.emit("arduino-data", {
-        weight: 24,
-        distance: 52,
-        status: "not full",
-      });
+      socket.emit("arduino-data", data);
     }
 
-    if (messaeg === "exit") {
+    if (message === "exit") {
       rl.close();
       return;
     }
